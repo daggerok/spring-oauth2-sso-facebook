@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <title>Minimal Facebook OAuth2 SSO Application</title>
+  <meta name="description" content=""/>
+  <meta name="viewport" content="width=device-width"/>
+  <base href="/"/>
+  <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+  <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body ng-app="fbOAuth2Sso" ng-controller="principalCtrl as ctrl">
+<div class="container" ng-show="!ctrl.authenticated">
+  <a href="/login">Let's login with Facebook</a>
+</div>
+<div class="container" ng-show="ctrl.authenticated">
+  <h3>Logged in as: <span ng-bind="ctrl.user"></span></h3>
+</div>
+<script type="text/javascript" src="/webjars/angularjs/angular.min.js"></script>
+<script type="text/javascript">
+  angular
+    .module("fbOAuth2Sso", [])
+      .controller("principalCtrl", ['$http', function($http) {
+        var self = this;
+
+        $http.get("/user").success(function(data) {
+          self.user = data.userAuthentication.details.name;
+          self.authenticated = true;
+        }).error(function() {
+          self.user = "N/A";
+          self.authenticated = false;
+        });
+      }]);
+</script>
+</body>
+</html>

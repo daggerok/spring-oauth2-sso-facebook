@@ -1,0 +1,7 @@
+language: java
+jdk: oraclejdk8
+script: mvn -U clean package
+cache:
+  directories:
+    - $HOME/.m2/
+    - .mvn/
